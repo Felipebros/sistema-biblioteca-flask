@@ -1,5 +1,8 @@
-build:
+build-dev:
 	docker-compose build
+
+build:
+	docker-compose build --build-arg APP_ENV=PRD
 
 bash:
 	docker-compose run app bash
