@@ -5,6 +5,7 @@ WORKDIR /code
 
 RUN python3 -m pip install --upgrade pip
 
-COPY requirements.txt /code/
-RUN pip install -r requirements.txt
+RUN python3 -m pip install pipenv
+
 COPY . /code/
+RUN pipenv install --deploy --system --ignore-pipfile
