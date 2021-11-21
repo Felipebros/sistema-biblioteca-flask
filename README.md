@@ -6,12 +6,6 @@
 make build-dev
 ```
 ```bash
-flask db init
-```
-```bash
-flask db migrate
-```
-```bash
 flask db upgrade
 ```
 ```bash
