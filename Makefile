@@ -1,8 +1,8 @@
 build-dev:
-	docker-compose build
+	docker-compose build --build-arg APP_ENV=development --build-arg APP_DEBUG=True
 
 build:
-	docker-compose build --build-arg APP_ENV=PRD
+	docker-compose build --build-arg APP_ENV=production --build-arg APP_DEBUG=False
 
 bash:
 	docker-compose run app bash
