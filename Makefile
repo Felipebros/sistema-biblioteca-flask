@@ -7,6 +7,9 @@ build:
 bash:
 	docker-compose run app bash
 
+flask-run:
+	flask run --host=0.0.0.0
+
 list:
 	docker-compose ps
 
