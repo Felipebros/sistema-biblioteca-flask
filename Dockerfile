@@ -16,5 +16,3 @@ RUN python3 -m pip install pipenv
 
 COPY . /code/
 RUN pipenv install $(test "$APP_ENV" = production || echo "--dev") --deploy --system --ignore-pipfile
-
-RUN export FLASK_APP=src/app
