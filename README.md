@@ -6,6 +6,15 @@
 make build-dev
 ```
 ```bash
+flask db init
+```
+```bash
+flask db migrate
+```
+```bash
+flask db upgrade
+```
+```bash
 flask run --host=0.0.0.0
 ```
 
