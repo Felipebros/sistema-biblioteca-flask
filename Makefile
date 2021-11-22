@@ -20,7 +20,7 @@ up:
 	docker-compose up
 
 down:
-	docker-compose down -v
+	docker-compose down
 
 clean:
 	docker-compose down --volumes --rmi all
