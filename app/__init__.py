@@ -3,7 +3,7 @@ import os
 from flask import Flask
 from flask_migrate import Migrate
 from .model import configure as config_db
-from .serializer import configure as config_marshmallow
+from .schemas import configure as config_marshmallow
 
 
 def create_app(test_config=None):

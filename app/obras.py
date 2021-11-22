@@ -1,6 +1,6 @@
 from flask import Blueprint, current_app, request, jsonify
 from .model import Obras
-from .serializer import ObrasSchema
+from .schemas import AutoresSchema, ObrasSchema
 
 
 bp_obras = Blueprint('obras', __name__)
@@ -8,6 +8,7 @@ bp_obras = Blueprint('obras', __name__)
 
 @bp_obras.route('/obras', methods=['POST'])
 def cadastrar():
+    autores_schema = AutoresSchema()
     obras_schema = ObrasSchema()
     obra = obras_schema.load(request.json)
     current_app.db.session.add(obra)

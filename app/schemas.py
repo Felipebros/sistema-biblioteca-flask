@@ -1,5 +1,5 @@
 from flask_marshmallow import Marshmallow
-from .model import Obras
+from .model import Obras, Autores
 
 ma = Marshmallow()
 
@@ -13,3 +13,11 @@ class ObrasSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Obras
         load_instance = True
+
+
+class AutoresSchema(ma.SQLAlchemyAutoSchema):
+    
+    class Meta:
+        model = Autores
+        load_instance = True
+        include_fk = True
