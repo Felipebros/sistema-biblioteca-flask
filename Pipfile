@@ -9,10 +9,14 @@ flask-sqlalchemy = "*"
 celery = "*"
 psycopg2-binary = "*"
 flask-migrate = "*"
+flask-marshmallow = "*"
+marshmallow-sqlalchemy = "*"
+flask-restx = "*"
 
 [dev-packages]
 pytest = "*"
 ipdb = "*"
+flake8 = "==3.9.2"
 pytest-flake8 = "*"
 pytest-cov = "*"
 
