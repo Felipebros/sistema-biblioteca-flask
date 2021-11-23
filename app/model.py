@@ -8,15 +8,17 @@ def configure(app):
     app.db = db
 
 
-class Obras(db.Model):
+class Obra(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    titulo = db.Column(db.String(255), nullable=False)
+    titulo = db.Column(db.String(255), unique=True, nullable=False)
     editora = db.Column(db.String(255))
     foto = db.Column(db.Text())
+    # autores = db.relationship('Obras', backref='obras', lazy=True)
 
 
-class Autores(db.Model):
+class Autor(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    nome = db.Column(db.String(255), nullable=False)
-    obras_id = db.Column(db.Integer, db.ForeignKey('obras.id'))
-    autores = db.relationship('Obras', backref='autores')
+    nome = db.Column(db.String(255), unique=True, nullable=False)
+    obra_id = db.Column(db.Integer, db.ForeignKey('obra.id'))
+    obra = db.relationship('Obra', backref='autores')
+    # obra = db.relationship('Obra', backref='autores', lazy='dynamic')
