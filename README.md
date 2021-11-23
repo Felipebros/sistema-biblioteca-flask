@@ -14,6 +14,10 @@ flask db upgrade
 ```bash
 flask run --host=0.0.0.0
 ```
+ou
+```bash
+make flask-run
+```
 
 ## Como executar em Produção
 
