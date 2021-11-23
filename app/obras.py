@@ -79,10 +79,15 @@ def modificar(id):
 
 
 @bp_obras.route('/obras/<int:id>', methods=['DELETE'])
-def deletar():
-    Obra.query.filter(Obra.id == id).delete()
+def deletar(id):
+    obra = current_app.db.session.query(Obra).filter_by(id=id).first()
+
+    if obra is None:
+        return jsonify({'mensagem': 'Obra não encontrada.'}), 400
+
+    current_app.db.session.delete(obra)
     current_app.db.session.commit()
-    return jsonify({'Deletado'})
+    return jsonify({'mensagem': 'Deletado'}), 202
 
 
 @bp_obras.route('/file-obras', methods=['POST'])

@@ -19,4 +19,4 @@ class Autor(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String(255), nullable=False)
     obra_id = db.Column(db.Integer, db.ForeignKey('obra.id'))
-    obra = db.relationship('Obra', backref='autores')
+    obra = db.relationship('Obra', backref=db.backref('autores', cascade='all, delete-orphan'))
