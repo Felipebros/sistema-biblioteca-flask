@@ -1,5 +1,6 @@
 from flask import Blueprint, current_app, request, jsonify
 from marshmallow import ValidationError
+from sqlalchemy.exc import NoResultFound
 from .model import Obra, Autor
 from .schemas import AutorSchema, ObraSchema
 
@@ -56,9 +57,9 @@ def cadastrar_csv():
 
 
 @bp_obras.route('/obras', methods=['GET'])
-def mostrar():
+def listar():
     obra_schema = ObraSchema(many=True)
-    result = Obras.query.all()
+    result = Obra.query.all()
     return obra_schema.jsonify(result), 200
 
 
@@ -79,7 +80,7 @@ def modificar(id):
 
 @bp_obras.route('/obras/<int:id>', methods=['DELETE'])
 def deletar():
-    Obras.query.filter(Obra.id == id).delete()
+    Obra.query.filter(Obra.id == id).delete()
     current_app.db.session.commit()
     return jsonify({'Deletado'})
 
