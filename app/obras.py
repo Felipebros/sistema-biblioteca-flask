@@ -16,39 +16,36 @@ def cadastrar():
     if not json_data:
         return jsonify({'messagem': 'Nenhum dado de entrada fornecido'}), 400
 
-    data_autores = dict(nome=json_data['autores'].copy())
-    # data_autores = json_data['autores'].copy()
+    data_autores = dict(nomes=json_data['autores'])
     del json_data['autores']
 
-    # try:
-    #     data = autor_schema.load(json_data)
-    # except ValidationError as err:
-    #     return err.messages, 422
-
-    # import ipdb; ipdb.set_trace()
+    try:
+        data_obra = obra_schema.load(json_data)
+    except ValidationError as err:
+        return err.messages, 422
 
     obra = Obra.query.filter_by(titulo=json_data['titulo']).first()
-    if obra is None:
-        obra = obra_schema.load(json_data)
-        current_app.db.session.add(obra)
+    if obra:
+        return jsonify({'messagem': 'Obra já cadastrada com esse título'}), 422
 
-    for data_autor in data_autores['nome']:
-        autor = Autor.query.filter_by(nome=data_autor).first()
-        if autor is None:
-            autor = Autor(nome=data_autor, obra_id=obra.id)
-            current_app.db.session.add(autor)
+    current_app.db.session.add(data_obra)
 
-    # data_autores['obra_id'] = autores
-    # autores = autor_schema.load({'nome': 'autor 1'})
-    # autor = Autor(nome='Au?tor 1', obra=obra)
+    for data_autor in data_autores['nomes']:
+        try:
+            data_autor = autor_schema.load(dict(nome=data_autor))
+        except ValidationError as err:
+            return err.messages, 422
 
-    current_app.db.session.add(autor)
+        autor = Autor.query.filter_by(nome=data_autor.nome).first()
+        if autor:
+            return jsonify({'messagem': f'Autor já cadastrado com esse nome "{data_autor.nome}"'}), 422
+
+        autor = Autor(nome=data_autor.nome, obra_id=data_obra.id)
+        current_app.db.session.add(autor)
+
     current_app.db.session.commit()
 
-    obra_result = obra_schema.dump(Obra.query.get(obra.id))
-    # autor_result = Autor.query.filter_by(obra_id=obra.id).all()
-    # import ipdb; ipdb.set_trace()
-    # result = {**obra_result, **autor_result}
+    obra_result = obra_schema.dump(Obra.query.get(data_obra.id))
 
     return obra_schema.jsonify(obra_result), 201
 
@@ -77,8 +74,7 @@ def modificar(id):
 
     obra_result = obra_schema.dump(obra)
     autor_result = autor_schema.dump(obra.quotes.all())
-    return jsonify({'obra': obra_result, 'autores':
-    autor_result}), 200
+    return jsonify({'obra': obra_result, 'autores': autor_result}), 200
 
 
 @bp_obras.route('/obras/<int:id>', methods=['DELETE'])

@@ -28,16 +28,4 @@ class ObraSchema(ma.SQLAlchemyAutoSchema):
         transient = True
 
     id = ma.auto_field(dump_only=True)
-    autores = ma.Nested(AutorSchema)
-
-    # links = ma.Hyperlinks({
-    #     'self': ma.URLFor('detalhe_obra', values=dict(id='<id>')),
-    #     'collection': ma.URLFor('lista_obra')
-    # })
-    # autores = ma.List(ma.HyperlinkRelated('obras'))
-
-    # autores = ma.Nested(this, default=[], many=True)
-    # autores = ma.Nested("ClientSiteSchema", default=[], many=True)
-    # autores = ma.URLFor(AutoresSchema)
-    # autores = ma.String(many=True)
-    # autores = ma.List(ma.HyperlinkRelated('autores'))
+    autores = ma.Nested(AutorSchema, many=True)
