@@ -16,6 +16,8 @@ class AutorSchema(ma.SQLAlchemyAutoSchema):
         model = Autor
         load_instance = True
 
+    id = ma.auto_field(dump_only=True)
+
 
 class ObraSchema(ma.SQLAlchemyAutoSchema):
 
@@ -25,6 +27,7 @@ class ObraSchema(ma.SQLAlchemyAutoSchema):
         include_fk = True
         transient = True
 
+    id = ma.auto_field(dump_only=True)
     autores = ma.Nested(AutorSchema)
 
     # links = ma.Hyperlinks({
