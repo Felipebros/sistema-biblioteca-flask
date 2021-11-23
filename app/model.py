@@ -13,12 +13,10 @@ class Obra(db.Model):
     titulo = db.Column(db.String(255), unique=True, nullable=False)
     editora = db.Column(db.String(255))
     foto = db.Column(db.Text())
-    # autores = db.relationship('Obras', backref='obras', lazy=True)
 
 
 class Autor(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    nome = db.Column(db.String(255), unique=True, nullable=False)
+    nome = db.Column(db.String(255), nullable=False)
     obra_id = db.Column(db.Integer, db.ForeignKey('obra.id'))
     obra = db.relationship('Obra', backref='autores')
-    # obra = db.relationship('Obra', backref='autores', lazy='dynamic')
