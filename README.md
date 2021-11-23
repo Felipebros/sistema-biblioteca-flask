@@ -6,6 +6,9 @@
 make build-dev
 ```
 ```bash
+make bash
+```
+```bash
 flask db upgrade
 ```
 ```bash
