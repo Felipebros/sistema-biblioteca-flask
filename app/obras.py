@@ -37,10 +37,6 @@ def cadastrar():
         except ValidationError as err:
             return err.messages, 422
 
-        autor = Autor.query.filter_by(nome=data_autor.nome).first()
-        if autor:
-            return jsonify({'messagem': f'Autor já cadastrado com esse nome "{data_autor.nome}"'}), 422
-
         autor = Autor(nome=data_autor.nome, obra_id=data_obra.id)
         current_app.db.session.add(autor)
 
