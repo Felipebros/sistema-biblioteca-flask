@@ -77,10 +77,10 @@ def editar(id):
     del json_data['autores']
 
     try:
-        data_obra = obra_schema.load(json_data, instance=query_obra) # talvez não é o mais viável partial=False não funciona, não tem essa informaçãos nas documentações das 4 bibliotecas utilizadas https://stackoverflow.com/questions/31891676/update-row-sqlalchemy-with-data-from-marshmallow
+        data_obra = obra_schema.load(json_data, instance=query_obra)  # talvez não é o mais viável partial=False não funciona, não tem essa informaçãos nas documentações das 4 bibliotecas utilizadas https://stackoverflow.com/questions/31891676/update-row-sqlalchemy-with-data-from-marshmallow
     except ValidationError as err:
         return err.messages, 422
-    
+
     # for data_autor in data_autores['nomes']:
     #     try:
     #         data_autor = autor_schema.load(dict(nome=data_autor))
