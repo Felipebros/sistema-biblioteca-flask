@@ -1,6 +1,4 @@
-# from marshmallow import fields
 from flask_marshmallow import Marshmallow
-# from marshmallow_sqlalchemy import SQLAlchemyAutoSchema, auto_field
 from .model import Obra, Autor
 
 ma = Marshmallow()
