@@ -10,6 +10,12 @@ bash:
 flask-run:
 	flask run --host=0.0.0.0
 
+flask-kill:
+	kill -9 $(ps -A | grep python | awk '{print $1}')
+
+ip-postgres:
+	docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' sistema-biblioteca-flask_db_1
+
 list:
 	docker-compose ps
 
