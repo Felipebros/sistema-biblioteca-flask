@@ -10,8 +10,8 @@ bp_obras = Blueprint('obras', __name__)
 
 @bp_obras.route('/obras', methods=['POST'])
 def cadastrar():
-    autor_schema = AutorSchema()
     obra_schema = ObraSchema()
+    autor_schema = AutorSchema()
 
     json_data = request.json
     if not json_data:
@@ -29,20 +29,17 @@ def cadastrar():
     if obra:
         return jsonify({'messagem': 'Obra já cadastrada com esse título'}), 422
 
-    current_app.db.session.add(data_obra)
-
     for data_autor in data_autores['nomes']:
         try:
             data_autor = autor_schema.load(dict(nome=data_autor))
         except ValidationError as err:
             return err.messages, 422
 
-        autor = Autor(nome=data_autor.nome, obra_id=data_obra.id)
+        autor = Autor(nome=data_autor.nome, obra=data_obra)
         current_app.db.session.add(autor)
 
     current_app.db.session.commit()
-
-    obra_result = obra_schema.dump(Obra.query.get(data_obra.id))
+    obra_result = obra_schema.dump(data_obra)
 
     return obra_schema.jsonify(obra_result), 201
 
