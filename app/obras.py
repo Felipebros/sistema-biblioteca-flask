@@ -15,7 +15,7 @@ def cadastrar():
 
     json_data = request.json
     if not json_data:
-        return jsonify({'messagem': 'Nenhum dado de entrada fornecido'}), 400
+        return jsonify({'messagem': 'Nenhum dado de entrada fornecido'}), 404
 
     data_autores = dict(nomes=json_data['autores'])
     del json_data['autores']
@@ -67,7 +67,7 @@ def editar(id):
     try:
         query_obra = Obra.query.filter(Obra.id == id).one()
     except NoResultFound:
-        return jsonify({'mensagem': 'Obra não encontrada.'}), 400
+        return jsonify({'mensagem': 'Obra não encontrada.'}), 404
 
     json_data = request.json
     if not json_data:
@@ -106,7 +106,7 @@ def deletar(id):
     obra = current_app.db.session.query(Obra).filter_by(id=id).first()
 
     if obra is None:
-        return jsonify({'mensagem': 'Obra não encontrada.'}), 400
+        return jsonify({'mensagem': 'Obra não encontrada.'}), 404
 
     current_app.db.session.delete(obra)
     current_app.db.session.commit()
