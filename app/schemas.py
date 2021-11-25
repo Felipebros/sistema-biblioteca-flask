@@ -23,7 +23,6 @@ class ObraSchema(ma.SQLAlchemyAutoSchema):
         model = Obra
         load_instance = True
         include_fk = True
-        transient = True
 
     id = ma.auto_field(dump_only=True)
     autores = ma.Nested(AutorSchema, many=True)
