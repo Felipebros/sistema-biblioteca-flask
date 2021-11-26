@@ -58,8 +58,8 @@ def listar():
 
 @bp_obras.route('/obras/<int:id>', methods=['PUT'])
 def editar(id):
-    autor_schema = AutorSchema()
     obra_schema = ObraSchema()
+    autor_schema = AutorSchema()
 
     try:
         query_obra = Obra.query.filter(Obra.id == id).one()
@@ -70,32 +70,34 @@ def editar(id):
     if not json_data:
         return jsonify({'messagem': 'Nenhum dado de entrada fornecido'}), 400
 
+    current_app.db.session.query(Autor).filter(Autor.obra_id == id).delete()
+    current_app.db.session.flush()
+
     data_autores = dict(nomes=json_data['autores'])
     del json_data['autores']
+
+    obra = Obra.query.filter(Obra.id != id, Obra.titulo == json_data['titulo']).first()
+    if obra:
+        return jsonify({'messagem': 'Obra já cadastrada com esse título'}), 422
 
     try:
         data_obra = obra_schema.load(json_data, instance=query_obra)  # talvez não é o mais viável partial=False não funciona, não tem essa informaçãos nas documentações das 4 bibliotecas utilizadas https://stackoverflow.com/questions/31891676/update-row-sqlalchemy-with-data-from-marshmallow
     except ValidationError as err:
         return err.messages, 422
 
-    # for data_autor in data_autores['nomes']:
-    #     try:
-    #         data_autor = autor_schema.load(dict(nome=data_autor))
-    #     except ValidationError as err:
-    #         return err.messages, 422
+    for data_autor in data_autores['nomes']:
+        try:
+            data_autor = autor_schema.load(dict(nome=data_autor))
+        except ValidationError as err:
+            return err.messages, 422
 
-    #     autor = Autor.query.filter_by(nome=data_autor.nome).first()
-    #     if autor:
-    #         return jsonify({'messagem': f'Autor já cadastrado com esse nome "{data_autor.nome}"'}), 422
-
-    #     autor = Autor(nome=data_autor.nome, obra_id=data_obra.id)
-    #     current_app.db.session.add(autor)
+        autor = Autor(nome=data_autor.nome, obra=data_obra)
+        current_app.db.session.add(autor)
 
     current_app.db.session.commit()
+    obra_result = obra_schema.dump(data_obra)
 
-    obra_result = obra_schema.dump(Obra.query.get(data_obra.id))
-
-    return obra_schema.jsonify(obra_result), 201
+    return obra_schema.jsonify(obra_result), 200
 
 
 @bp_obras.route('/obras/<int:id>', methods=['DELETE'])
