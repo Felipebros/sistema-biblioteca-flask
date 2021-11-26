@@ -9,7 +9,7 @@ def configure(app):
 
 
 class AutorSchema(ma.SQLAlchemyAutoSchema):
-    
+
     class Meta:
         model = Autor
         load_instance = True
